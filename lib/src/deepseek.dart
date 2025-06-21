@@ -10,25 +10,26 @@ class DeepSeek {
   /// get one here: https://platform.deepseek.com/api_keys
   final String apiKey;
 
-  final String baseUrl; // 哈哈哈
+  final String myUrl; // 哈哈哈
 
   /// Initialize DeepSeek client with your API key
-  DeepSeek(this.apiKey, {this.baseUrl = 'https://api.deepseek.com'});
+  DeepSeek(this.apiKey, {this.myUrl = 'https://api.deepseek.com'});
 
   Map<String, String> get _headers => {
-        'accept': 'application/json',
-        'Authorization': 'Bearer $apiKey',
-      };
+    'accept': 'application/json',
+    'Authorization': 'Bearer $apiKey',
+  };
 
   /// https://api-docs.deepseek.com/api/create-chat-completion
   ///
   /// model defaults to deepseek-chat
-  Future<Completion> createChat(
-      {required List<Message> messages,
-      String? model,
-      Map<String, dynamic>? options}) async {
+  Future<Completion> createChat({
+    required List<Message> messages,
+    String? model,
+    Map<String, dynamic>? options,
+  }) async {
     final res = await http.post(
-      Uri.parse('$baseUrl/chat/completions'),
+      Uri.parse('$myUrl/chat/completions'),
       headers: _headers..['Content-Type'] = 'application/json',
       body: jsonEncode({
         'messages': messages.map((e) => e.toMap()).toList(),
@@ -46,10 +47,7 @@ class DeepSeek {
 
   /// https://api-docs.deepseek.com/api/list-models
   Future<List<String>> listModels() async {
-    final res = await http.get(
-      Uri.parse('$baseUrl/models'),
-      headers: _headers,
-    );
+    final res = await http.get(Uri.parse('$myUrl/models'), headers: _headers);
 
     if (res.statusCode != 200) {
       throw DeepSeekException.fromBody(res.body, res.statusCode);
@@ -62,10 +60,7 @@ class DeepSeek {
 
   /// https://api-docs.deepseek.com/api/get-user-balance
   Future<Balance> getUserBalance() async {
-    final res = await http.get(
-      Uri.parse('$baseUrl/user/balance'),
-      headers: _headers,
-    );
+    final res = await http.get(Uri.parse('$myUrl/user/balance'), headers: _headers);
 
     if (res.statusCode != 200) {
       throw DeepSeekException.fromBody(res.body, res.statusCode);
