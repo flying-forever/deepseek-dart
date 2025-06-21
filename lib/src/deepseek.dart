@@ -10,7 +10,7 @@ class DeepSeek {
   /// get one here: https://platform.deepseek.com/api_keys
   final String apiKey;
 
-  final String baseUrl;
+  final String baseUrl; // 哈哈哈
 
   /// Initialize DeepSeek client with your API key
   DeepSeek(this.apiKey, {this.baseUrl = 'https://api.deepseek.com'});
